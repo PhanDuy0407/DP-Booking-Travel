@@ -13,7 +13,7 @@ $ mysqldump -u {USERNAME} -p dump.sql
 ```shell
 $ cd Recommends_sys
 $ source venv/bin/activate
-$ pip install requirement.txt
+$ pip install -r requirement.txt
 $ uvicorn return_statement:app --host 0.0.0.0 --port 8000 --reload
 ```
 - Backend
