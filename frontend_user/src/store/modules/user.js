@@ -1,15 +1,15 @@
 import axios from "axios"
 
 const state = {
-    authentication: false,
+    // authentication: false,
     user: {}
 }
 
 // getters
 const getters = {
-    getAuthentication: (state) => {
-        return state.authentication
-    },
+    // getAuthentication: (state) => {
+    //     return state.authentication
+    // },
     getUser: (state) => {
         return state.user
     }
@@ -17,9 +17,9 @@ const getters = {
 
 // mutations
 const mutations = {
-    setAuthentication: (state, payload) => {
-        state.authentication = payload
-    },
+    // setAuthentication: (state, payload) => {
+    //     state.authentication = payload
+    // },
     setUser: (state, payload) => {
         state.user = {
             // fullname: payload.fullname,
@@ -32,9 +32,9 @@ const mutations = {
 }
 // actions
 const actions = {
-    setAuthentication({commit}, val){
-        commit('setAuthentication', val)
-    },
+    // setAuthentication({commit}, val){
+    //     commit('setAuthentication', val)
+    // },
     async getUser({commit}, item){
         const res = await axios.get(`http://localhost:8089/api/v1/user/${item}`)
         if(res.status == 200){

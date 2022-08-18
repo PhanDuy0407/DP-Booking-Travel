@@ -1,5 +1,6 @@
 package com.group10.bookingtravel.controller;
 
+import com.group10.bookingtravel.dto.OrdersHistoryDTO;
 import com.group10.bookingtravel.entity.Orders;
 import com.group10.bookingtravel.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,9 @@ public class OrdersController {
     @PostMapping("/order")
     public ResponseEntity<Orders> bookTour(@RequestBody Orders order){
         return new ResponseEntity<>(orderService.bookTour(order), HttpStatus.CREATED);
+    }
+    @GetMapping("/order-history/{userId}")
+    public List<OrdersHistoryDTO> getHistoryOrder(@PathVariable Long userId){
+        return orderService.getHistoryOrders(userId);
     }
 }

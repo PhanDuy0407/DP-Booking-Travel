@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DataUpdateTourDTO {
-    private Integer id;
+    private Long id;
     private String code;
     private String name;
     private String startTime;
@@ -38,7 +38,7 @@ public class DataUpdateTourDTO {
 
     private List<TourScheduleUpdateDTO> tourScheduleDTOList;
 
-    private Integer idDiscount;
+    private Long idDiscount;
     private Long priceId;
     private String discountStartDate;
     private String discountEndDate;

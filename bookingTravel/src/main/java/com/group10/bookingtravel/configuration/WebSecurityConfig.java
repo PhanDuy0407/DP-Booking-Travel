@@ -53,7 +53,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/api/v1/tour-orders/*").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .sessionManagement()

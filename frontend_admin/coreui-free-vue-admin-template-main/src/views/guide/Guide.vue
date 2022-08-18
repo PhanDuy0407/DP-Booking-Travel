@@ -107,6 +107,7 @@ export default {
     ...mapGetters({
       getGuideList: 'guide/getGuideList',
       getMaxId: 'guide/getMaxId',
+      authentication: 'user/getAuthentication',
     }),
     displayGuideData() {
       if (!this.getGuideList || this.getGuideList.length === 0) return []
@@ -117,7 +118,11 @@ export default {
     },
   },
   created() {
-    this.actionGuideList(this.objectSearch)
+    if (localStorage.getItem('username') !== null) {
+      this.actionGuideList(this.objectSearch)
+    } else {
+      this.$router.push({ name: 'Login' })
+    }
   },
   methods: {
     ...mapActions({

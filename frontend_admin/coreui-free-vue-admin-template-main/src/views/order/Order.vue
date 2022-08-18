@@ -92,6 +92,7 @@ export default {
   computed: {
     ...mapGetters({
       getAllOrdersList: 'order/getAllOrdersList',
+      authentication: 'user/getAuthentication',
     }),
     displayOrdersAllData() {
       if (!this.getAllOrdersList || this.getAllOrdersList.length === 0)
@@ -103,7 +104,11 @@ export default {
     },
   },
   created() {
-    this.actionAllOrdersList(this.objectSearch)
+    if (localStorage.getItem('username') !== null) {
+      this.actionAllOrdersList(this.objectSearch)
+    } else {
+      this.$router.push({ name: 'Login' })
+    }
   },
   methods: {
     ...mapActions({

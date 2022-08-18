@@ -1,5 +1,6 @@
 package com.group10.bookingtravel.service;
 
+import com.group10.bookingtravel.dto.OrdersHistoryDTO;
 import com.group10.bookingtravel.entity.Orders;
 import com.group10.bookingtravel.repository.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,13 @@ public class OrderService {
         order.setCreatedDate(new Date());
         order.setStatus("1");
         return ordersRepository.save(order);
+    }
+
+    public List<OrdersHistoryDTO> getHistoryOrders(Long userId){
+        List<OrdersHistoryDTO> arrList = new ArrayList<>();
+        if(ordersRepository.getOrderHistoryByPriceId(userId).isPresent()){
+            return ordersRepository.getOrderHistoryByPriceId(userId).get();
+        }
+        return arrList;
     }
 }

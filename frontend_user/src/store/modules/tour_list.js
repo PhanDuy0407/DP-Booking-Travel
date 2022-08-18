@@ -12,16 +12,13 @@ const state = {
     },
     tours: [],
     tour: null,
-    toursDiscount: []
+    toursDiscount: [],
+    toursRecommend: []
 }
 
 // getters
 const getters = {
     getObjSearch: (state) => {
-        // let result = []
-        // state.resOperationManuals.filter((item) => {
-        //     result.push(item)
-        // })
         return state.objSearch
     },
     getTours: (state) => {
@@ -33,6 +30,9 @@ const getters = {
     getToursDiscount: (state) => {
         return state.toursDiscount
     },
+    getToursRecommend: (state) => {
+        return state.toursRecommend
+    }
 
 }
 
@@ -59,6 +59,9 @@ const mutations = {
     setToursDiscount: (state, payload) => {
         state.toursDiscount = payload
     },
+    setToursRecommend: (state, payload) => {
+        state.toursRecommend = payload
+    }
 
 }
 // actions
@@ -84,6 +87,16 @@ const actions = {
         const data = await axios.get(`http://localhost:8089/api/v1/tour-discount`)
         if (data.status == 200) {
             commit('setToursDiscount', data.data)
+        }
+    },
+    async getToursRecommend({ commit }) {
+        let url = `http://localhost:8089/api/v1/tours/recommend`
+        if(localStorage.getItem('userId') !== null){
+            url = `http://localhost:8089/api/v1/tours/recommend?userId=${localStorage.getItem('userId')}`
+        }
+        const data = await axios.get(url)
+        if (data.status == 200) {
+            commit('setToursRecommend', data.data)
         }
     }
     // async exportData({ commit }, filter) {

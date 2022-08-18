@@ -16,5 +16,6 @@ public interface TourScheduleRepository extends JpaRepository<TourSchedule,Long>
     @Query(value = "SELECT MAX(ID) FROM tour_schedule",nativeQuery = true)
     public Integer getMaxId();
 
-    public void deleteAllByTourId(Long tourid);
+//    @Query(value = "SELECT MAX(ID) FROM tour_schedule",nativeQuery = true)
+//    public void deleteAllByTourId(Long tourid);
 }

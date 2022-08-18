@@ -107,7 +107,18 @@ public class UserLoginController {
 
             userService.saveUser(user);
 
-            return ResponseEntity.ok(new BaseResponse(true, "Register successfully"));
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            registerRequestDTO.getUsername(),
+                            registerRequestDTO.getPassword()
+                    )
+            );
+
+            UserJwtDTO userData = (UserJwtDTO) authentication.getPrincipal();
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtHandler.generateToken(userData);
+
+            return ResponseEntity.ok(new BaseResponse(true, "Register successfully", new UserJwtResDTO(userData.getId(), jwt)));
         }
     }
 }

@@ -12,7 +12,7 @@
     "
   >
     <CSidebarBrand>
-      <h4 custom-class-name="sidebar-brand-full">DL Travel</h4>
+      <h4 custom-class-name="sidebar-brand-full">DP Travel</h4>
     </CSidebarBrand>
 
     <AppSidebarNav />

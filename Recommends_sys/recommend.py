@@ -12,35 +12,32 @@ import pandas as pd
 import scipy.sparse
 from scipy.spatial.distance import correlation
 
-data=pd.read_csv('data_collaborative.csv')
-# placeInfo=pd.read_csv('data_content.csv')
-# data=pd.concat([data,df])
-# data=pd.merge(data,placeInfo,left_on='itemId',right_on="itemId")
+data=pd.read_csv('./data_collaborative_1.csv')
 userIds=data.userId
-userIds2=data[['userId']]
 
-data.loc[0:10,['userId']]
+data.loc[0:100,['userId']]
 data=pd.DataFrame.sort_values(data,['userId','itemId'],ascending=[0,1])
 
-def favoritePlace(activeUser,N):
-    topPlace=pd.DataFrame.sort_values(
-        data[data.userId==activeUser],['rating'],ascending=[0])[:N]
-    return list(topPlace.itemId)
-
 userItemRatingMatrix=pd.pivot_table(data, values='rating',
+                                    index=['userId'], columns=['itemId'], dropna=False)
+
+userItemvisitMatrix=pd.pivot_table(data, values='isvisited',
                                     index=['userId'], columns=['itemId'])
+userItemIsNotActive=pd.pivot_table(data, values='isNotActive',
+                                    index=['userId'], columns=['itemId'])
+
 
 def similarity(user1,user2):
     try:
-        user1=np.array(user1)-np.nanmean(user1)
-        user2=np.array(user2)-np.nanmean(user2)
-        commonItemIds=[i for i in range(len(user1)) if user1[i]>0 and user2[i]>0]
-        if len(commonItemIds)==0:
-           return 0
-        else:
-           user1=np.array([user1[i] for i in commonItemIds])
-           user2=np.array([user2[i] for i in commonItemIds])
-           return correlation(user1,user2)
+        if (not np.isnan(user2).all()) and (not np.isnan(user1).all()):
+            user1=np.array(user1)-np.nanmean(user1)
+            user2=np.array(user2)-np.nanmean(user2)
+            commonItemIds=[i for i in range(len(user1)) if user1[i]>0 and user2[i]>0]
+            if len(commonItemIds)!=0:
+                user1=np.array([user1[i] for i in commonItemIds])
+                user2=np.array([user2[i] for i in commonItemIds])
+                return correlation(user1,user2)
+        return 0
     except ZeroDivisionError:
         print("You can't divide by zero!")
 
@@ -64,23 +61,26 @@ def nearestNeighbourRatings(activeUser,K):
     return predictItemRating
 
 def topNRecommendations(activeUser,N):
+    if(activeUser not in np.array(userIds)):
+        return None
     try:
-        predictItemRating=nearestNeighbourRatings(activeUser,10)
-        placeAlreadyWatched=list(userItemRatingMatrix.loc[activeUser]
+        predictItemRating=nearestNeighbourRatings(activeUser,11)
+        placeAlreadyWatched_1=list(userItemRatingMatrix.loc[activeUser]
                               .loc[userItemRatingMatrix.loc[activeUser]>0].index)
+        placeAlreadyWatched_2=list(userItemvisitMatrix.loc[activeUser]
+                              .loc[userItemvisitMatrix.loc[activeUser]>0].index)
+        placeDisable=list(userItemIsNotActive.loc[activeUser]
+                              .loc[userItemIsNotActive.loc[activeUser]>0].index)
+        placeAlreadyWatched=placeAlreadyWatched_1+placeAlreadyWatched_2+placeDisable
+        placeAlreadyWatched=set(placeAlreadyWatched)
         predictItemRating=predictItemRating.drop(placeAlreadyWatched)
-        print(predictItemRating['Rating'])
         topRecommendations=pd.DataFrame.sort_values(predictItemRating,
                                                 ['Rating'],ascending=[0])[:N]
-        print((topRecommendations.get("itemId")))
-        # topRecommendationTitles=(placeInfo.loc[placeInfo.itemId.isin(topRecommendations.index)])
+        topRecommendationTitles=(data.loc[data.itemId.isin(topRecommendations.index)])
+        topRecommendation=set(topRecommendationTitles.itemId)
     except ZeroDivisionError:
         print("You can't divide by zero!")
-    # return list(topRecommendationTitles.title)
-    return []
-
-print("The recommended places for user",9," are: ",topNRecommendations(9,4))
-
+    return list(topRecommendation)
 #khi loại bỏ item,chỉ cần gán nhãn cho user đang xét đánh giá item đó là số >0 sẽ đảm bảo ko gợi ý sản phẩm đó
 #khi thêm sản phẩm,thêm vào bình thường.
 #các người dùng chưa đánh giá sản phẩm nào thì gán rate đó là  0

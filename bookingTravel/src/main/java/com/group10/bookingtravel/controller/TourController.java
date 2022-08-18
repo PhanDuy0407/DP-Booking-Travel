@@ -1,21 +1,21 @@
 package com.group10.bookingtravel.controller;
 
 
-import com.group10.bookingtravel.dto.DataAddTourDTO;
-import com.group10.bookingtravel.dto.DataUpdateTourDTO;
-import com.group10.bookingtravel.dto.TourDTO_User;
-import com.group10.bookingtravel.dto.TourInfoDTO;
+import com.group10.bookingtravel.dto.*;
 import com.group10.bookingtravel.entity.*;
+import com.group10.bookingtravel.repository.TourRepository;
 import com.group10.bookingtravel.service.TourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @CrossOrigin("*")
@@ -24,6 +24,9 @@ public class TourController {
 
     @Autowired
     private TourService tourService;
+
+    @Autowired
+    private TourRepository tourRepository;
 
     @GetMapping("/tours")
     private ResponseEntity<List<TourInfoDTO>> getTour(@RequestParam(name = "codeTour", required = false) String codeTour,
@@ -94,4 +97,42 @@ public class TourController {
     public List<Orders> getTourOrdersByTourId(@PathVariable Long id){
         return tourService.getListOrderByTourId(id);
     }
+
+    @GetMapping("/tours/recommend")
+    private ResponseEntity<List<TourDTO_User>> getRecommendTour(@RequestParam(name="userId", required = false) Long userId){
+        List<TourDTO_User> listRecommend = new ArrayList<>();
+        if (userId == null){
+            listRecommend = tourRepository.getTourDTOList().subList(0,6);
+            return new ResponseEntity<List<TourDTO_User>>(listRecommend, HttpStatus.OK);
+        }
+        var uri = URI.create("http://localhost:8000/recommend?userId="+userId);
+        var client = HttpClient.newHttpClient();
+        var request = HttpRequest
+                .newBuilder()
+                .uri(uri)
+                .GET()
+                .version(HttpClient.Version.HTTP_1_1)
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (response != null){
+            if(response.body().equals("null")){
+                return new ResponseEntity<List<TourDTO_User>>(tourRepository.getTourDTOList().subList(0,6), HttpStatus.OK);
+            }
+            else{
+                String[] responseBody = response.body().substring(1, response.body().length()-1).split(",");
+                for (String id: responseBody) {
+                    listRecommend.add(tourRepository.getTourById(Long.valueOf(id)));
+                }
+            }
+        }
+
+        return new ResponseEntity<List<TourDTO_User>>(listRecommend, HttpStatus.OK);
+    }
+
+
 }

@@ -447,7 +447,9 @@ export default {
       this.tourDataAdd.landtourPriceBaby = this.getLandTourPriceById.baby
       this.tourDataAdd.landtourPriceSurcharge =
         this.getLandTourPriceById.surcharge
-      this.tourDataAdd.idDiscount = this.discountTour.id.toString()
+      if (this.discountTour.idDiscount != null) {
+        this.tourDataAdd.idDiscount = this.discountTour.id.toString()
+      }
       if (this.discountTour.startDate != null) {
         this.tourDataAdd.discountStartDate =
           this.discountTour.startDate.toString()

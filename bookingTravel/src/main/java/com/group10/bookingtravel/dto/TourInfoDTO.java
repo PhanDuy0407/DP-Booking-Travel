@@ -45,4 +45,5 @@ public class TourInfoDTO {
         this.status = status;
 
     }
+
 }

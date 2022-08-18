@@ -12,25 +12,25 @@ export default [
     component: 'CNavItem',
     name: 'Quản lý Tour',
     to: '/tour',
-    icon: 'cil-speedometer',
+    icon: 'cil-car-alt',
   },
   {
     component: 'CNavItem',
     name: 'Quản lý Guide',
     to: '/guide',
-    icon: 'cil-puzzle',
+    icon: 'cil-user',
   },
   {
     component: 'CNavItem',
     name: 'Quản lý User',
     to: '/user',
-    icon: 'cil-drop',
+    icon: 'cil-people',
   },
   {
     component: 'CNavItem',
     name: 'Quản lý Order',
     to: '/order',
-    icon: 'cil-pencil',
+    icon: 'cil-notes',
   },
   //   component: 'CNavTitle',
   //   name: 'Theme',
@@ -267,38 +267,38 @@ export default [
   //     shape: 'pill',
   //   },
   // },
-  {
-    component: 'CNavTitle',
-    name: 'Extras',
-  },
-  {
-    component: 'CNavGroup',
-    name: 'Pages',
-    to: '/pages',
-    icon: 'cil-star',
-    items: [
-      {
-        component: 'CNavItem',
-        name: 'Login',
-        to: '/pages/login',
-      },
-      {
-        component: 'CNavItem',
-        name: 'Register',
-        to: '/pages/register',
-      },
-      {
-        component: 'CNavItem',
-        name: 'Error 404',
-        to: '/pages/404',
-      },
-      {
-        component: 'CNavItem',
-        name: 'Error 500',
-        to: '/pages/500',
-      },
-    ],
-  },
+  // {
+  //   component: 'CNavTitle',
+  //   name: 'Extras',
+  // },
+  // {
+  //   component: 'CNavGroup',
+  //   name: 'Pages',
+  //   to: '/pages',
+  //   icon: 'cil-star',
+  //   items: [
+  //     {
+  //       component: 'CNavItem',
+  //       name: 'Login',
+  //       to: '/pages/login',
+  //     },
+  //     {
+  //       component: 'CNavItem',
+  //       name: 'Register',
+  //       to: '/pages/register',
+  //     },
+  //     {
+  //       component: 'CNavItem',
+  //       name: 'Error 404',
+  //       to: '/pages/404',
+  //     },
+  //     {
+  //       component: 'CNavItem',
+  //       name: 'Error 500',
+  //       to: '/pages/500',
+  //     },
+  //   ],
+  // },
 
   // {
   //   component: 'CNavItem',

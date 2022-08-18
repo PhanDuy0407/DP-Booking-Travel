@@ -140,12 +140,6 @@
                             >{{ formatCurrency(item.price) }} </span
                           >
                         </div>
-                        <!-- <div class="text-body-1 red--text font-weight-bold">
-                          8.000.000đ
-                        </div> -->
-                        <div class="text-body-1 text-center py-5 indigo--text">
-                          Còn: 00 ngày 09:09:00
-                        </div>
                         <div class="text-body-1 text-right black--text">
                           <span class="text-decoration-underline"
                             >Số chỗ còn:</span

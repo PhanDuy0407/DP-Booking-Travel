@@ -24,7 +24,7 @@ public class UserService implements UserDetailsService {
 
     public List<User> getListUserStatus(String id, String username,String rank, String status){
         List<User> userList = new ArrayList<>();
-        if(id == null || id.equals("null")){
+        if(id == null || id.equals("null") || id.equals("")){
             id = "0";
         }
         if(status == null || status.equals("null")){

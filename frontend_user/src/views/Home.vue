@@ -1,21 +1,6 @@
 <template>
   <div>
     <div class="background-img">
-      <!-- <b-card class="menu-tab"> -->
-      <!-- <b-tabs>
-          <b-tab title="Tour du lịch">
-            aaaaaaaaaaaaaa
-          </b-tab>
-          <b-tab title="Tour du lịch">
-            aaaaaaaaaaaaaa
-          </b-tab>
-          <b-tab title="Tour du lịch">
-            aaaaaaaaaaaaaa
-          </b-tab>
-          <b-tab title="Tour du lịch">
-            aaaaaaaaaaaaaa
-          </b-tab>
-        </b-tabs> -->
       <v-card class="menu-tab">
         <v-tabs
           v-model="tab"
@@ -171,7 +156,7 @@
                       </v-img>
 
                       <v-card-text>
-                        <div class="text-h6 font-weight-bold black--text">
+                        <div class="text-h6 font-weight-bold black--text" style="height:120px">
                           {{ item.name }}
                         </div>
 
@@ -187,9 +172,9 @@
                         <div class="text-body-1 red--text font-weight-bold">
                           {{ formatCurrency(item.price-item.discount) }}
                         </div>
-                        <div class="text-body-1 text-center py-5 indigo--text">
+                        <!-- <div class="text-body-1 text-center py-5 indigo--text">
                           Còn: {{calRemainingTime(item.endDateDiscount)}}
-                        </div>
+                        </div> -->
                         <div class="text-body-1 text-right black--text">
                           <span class="text-decoration-underline"
                             >Số chỗ còn:</span
@@ -212,58 +197,12 @@
             </v-row>
           </div>
 
-          <div class="pt-16">
-            <!-- <h2 class="text-h4 font-weight-bold pb-4">Featured</h2>
-
-            <v-row>
-              <v-col v-for="i in 3" :key="i" cols="6" lg="4">
-                <v-card dark flat>
-                  <v-img
-                    :aspect-ratio="16 / 9"
-                    class="elevation-2 fill-height"
-                    gradient="to top, rgba(25,32,72,.4), rgba(25,32,72,.0)"
-                    height="600px"
-                    src="https://cdn.pixabay.com/photo/2019/10/29/14/46/landscape-4587079_1280.jpg"
-                  >
-                    <div
-                      class="
-                        d-flex
-                        flex-column
-                        justify-space-between
-                        fill-height
-                      "
-                    >
-                      <v-card-text>
-                        <v-btn color="accent">ANIMALS</v-btn>
-                      </v-card-text>
-
-                      <v-card-text>
-                        <div
-                          class="text-h5 py-3 font-weight-bold"
-                          style="line-height: 1.2"
-                        >
-                          15 things I have always wondered about birds
-                        </div>
-
-                        <div class="d-flex align-center">
-                          <v-avatar color="accent" size="36">
-                            <v-icon dark>mdi-feather</v-icon>
-                          </v-avatar>
-
-                          <div class="pl-2">Yan Lee · 03 Jan 2019</div>
-                        </div>
-                      </v-card-text>
-                    </div>
-                  </v-img>
-                </v-card>
-              </v-col>
-            </v-row> -->
+          <div class="pt-16" :style="{'margin-bottom' : '100px'}">
             <h2 class="text-h4 font-weight-bold pb-4 text-center">
-              Tour ưa thích
+              Gợi ý cho bạn
             </h2>
-
             <v-row>
-              <v-col v-for="i in 6" :key="i" cols="12" lg="4" md="6">
+              <v-col v-for="(item, i) in toursRecommend" :key="i" cols="12" lg="4" md="6">
                 <v-hover
                   v-slot:default="{ hover }"
                   close-delay="50"
@@ -275,56 +214,44 @@
                       :elevation="hover ? 12 : 0"
                       flat
                       hover
-                      to="/detail"
+                      :to="{ name: 'Detail', params: { id: item.id } }"
                     >
                       <v-img
                         :aspect-ratio="16 / 9"
                         class="elevation-2"
                         gradient="to top, rgba(25,32,72,.4), rgba(25,32,72,.0)"
                         height="200px"
-                        src="https://cdn.pixabay.com/photo/2020/12/23/14/41/forest-5855196_1280.jpg"
+                        :src="item.mainImageUrl"
                         style="border-radius: 16px"
                       >
-                        <v-card-text>
-                          <v-btn color="accent" to="category">TIPS</v-btn>
-                        </v-card-text>
                       </v-img>
 
                       <v-card-text>
-                        <div class="text-h5 font-weight-bold black--text">
-                          Bangkok - Pattaya (Khách sạn 4*, tặng Show Alcazar và
-                          Buffet tại BaiYoke Sky)
+                        <div class="text-h6 font-weight-bold black--text" style="height:120px">
+                          {{ item.name }}
                         </div>
 
                         <div class="text-body-1 pt-5 black--text">
-                          Nơi khởi hành: TP. Hồ Chí Minh
+                          Nơi khởi hành: {{ item.startPlaceName }}
                         </div>
                         <div class="text-body-1 black--text">
                           Giá:
                           <span class="text-decoration-line-through"
-                            >9.000.000đ</span
+                            >{{ formatCurrency(item.price) }}</span
                           >
                         </div>
                         <div class="text-body-1 red--text font-weight-bold">
-                          8.000.000đ
+                          {{ formatCurrency(item.price-item.discount) }}
                         </div>
-                        <div class="text-body-1 text-center py-5 indigo--text">
-                          Còn: 00 ngày 09:09:00
-                        </div>
+                        <!-- <div class="text-body-1 text-center py-5 indigo--text">
+                          Còn: {{calRemainingTime(item.endDateDiscount)}}
+                        </div> -->
                         <div class="text-body-1 text-right black--text">
                           <span class="text-decoration-underline"
                             >Số chỗ còn:</span
                           >
-                          <span class="red--text"> 3</span>
+                          <span class="red--text">{{item.placeOrderMax}}</span>
                         </div>
-
-                        <!-- <div class="d-flex align-center">
-                          <v-avatar color="accent" size="36">
-                            <v-icon dark>mdi-feather</v-icon>
-                          </v-avatar>
-
-                          <div class="pl-2">Yan Lee · 22 July 2019</div>
-                        </div> -->
                       </v-card-text>
                     </v-card>
                   </div>
@@ -357,10 +284,6 @@ export default {
     return {
       tab: null,
       menu: false,
-      // places: [
-      //   { value: 1, text: "Hà Nội" },
-      //   { value: 2, text: "TPHCM" },
-      // ],
       periods: [
         { value: 1, text: "1-3 ngày" },
         { value: 2, text: "4-7 ngày" },
@@ -377,23 +300,23 @@ export default {
   computed: {
     ...mapGetters({
       places: "place/getPlaces",
-      toursDiscount: "tourList/getToursDiscount"
+      toursDiscount: "tourList/getToursDiscount",
+      toursRecommend: "tourList/getToursRecommend"
     }),
-    priceDiscount(){
-      
-    }
   },
 
   created() {
     this.getPlaces();
     this.getToursDiscount();
+    this.getToursRecommend();
   },
 
   methods: {
     ...mapActions({
       setObjSearch: "tourList/setObjSearch",
       getPlaces: "place/getAll",
-      getToursDiscount: "tourList/getToursDiscount"
+      getToursDiscount: "tourList/getToursDiscount",
+      getToursRecommend:"tourList/getToursRecommend"
     }),
     clickSearch() {
       var fromPeriod;

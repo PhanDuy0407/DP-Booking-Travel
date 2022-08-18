@@ -303,16 +303,13 @@ public class TourService {
         }
         landTourPriceRepository.saveAndFlush(landTourPrice);
 
-//        Price price = new Price();
-//        price.setId(idPrice);
-//        price.setTourId(idTour);
-//        price.setTourPriceId(idTourPrice);
-//        price.setLandTourPriceId(idLandTourPrice);
-//        priceRepository.saveAndFlush(price);
-
         if((dataUpdateTourDTO.getDiscount() != null && dataUpdateTourDTO.getDiscount() != "null")&& (dataUpdateTourDTO.getDiscountStartDate() != null && dataUpdateTourDTO.getDiscountStartDate() != "null") && (dataUpdateTourDTO.getDiscountEndDate() != null && dataUpdateTourDTO.getDiscountEndDate() != "null")){
+
+            discountRepository.deleteById(discountRepository.findByPriceId(getPriceByIdTour(dataUpdateTourDTO.getId()).getId()).get().getId());
+            discountRepository.flush();
+
             Discount discount = new Discount();
-            discount.setPriceId(Long.valueOf(dataUpdateTourDTO.getPriceId()));
+            discount.setPriceId(getPriceByIdTour(dataUpdateTourDTO.getId()).getId());
             discount.setDiscount(Float.valueOf(dataUpdateTourDTO.getDiscount()));
             Date discountStartDate =new SimpleDateFormat("yyyy-MM-dd").parse(dataUpdateTourDTO.getDiscountStartDate());
             Date discountEnDate =new SimpleDateFormat("yyyy-MM-dd").parse(dataUpdateTourDTO.getDiscountEndDate());
@@ -320,10 +317,17 @@ public class TourService {
             discount.setEndDate(discountEnDate);
             discountRepository.saveAndFlush(discount);
         }
-        tourScheduleRepository.deleteAllByTourId(Long.valueOf(dataUpdateTourDTO.getId()));
+        List<Long> ids = new ArrayList<>();
+        List<TourSchedule> tourScheduleList = getTourSchedulebyTourId(dataUpdateTourDTO.getId());
+        for (TourSchedule ts:tourScheduleList) {
+            ids.add(ts.getId());
+        }
+        tourScheduleRepository.deleteAllById(ids);
+        tourScheduleRepository.flush();
+        long tourId = dataUpdateTourDTO.getId();
         for(TourScheduleUpdateDTO tourScheduleDTO: dataUpdateTourDTO.getTourScheduleDTOList()){
             TourSchedule tourSchedule = new TourSchedule();
-            tourSchedule.setTourId(Long.valueOf(tourScheduleDTO.getTourId()));
+            tourSchedule.setTourId(tourId);
             tourSchedule.setAlias(tourScheduleDTO.getAlias());
             Date scheduleTime =new SimpleDateFormat("yyyy-MM-dd").parse(tourScheduleDTO.getTime());
             tourSchedule.setTime(scheduleTime);

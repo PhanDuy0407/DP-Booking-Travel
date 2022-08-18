@@ -144,6 +144,7 @@ export default {
   computed: {
     ...mapGetters({
       getUserList: 'user/getUserList',
+      authentication: 'user/getAuthentication',
     }),
     displayUserData() {
       if (!this.getUserList || this.getUserList.length === 0) return []
@@ -169,18 +170,22 @@ export default {
     },
   },
   created() {
-    this.actionUserList(this.objectSearch)
-    for (let i = 0; i < this.getUserList.length; i++) {
-      if (this.getUserList[i].status == 1) {
-        this.stopActive[this.getUserList[i].id] = true
-      } else {
-        this.stopActive[this.getUserList[i].id] = false
+    if (localStorage.getItem('username') === null) {
+      this.$router.push({ name: 'Login' })
+    } else {
+      this.actionUserList(this.objectSearch)
+      for (let i = 0; i < this.getUserList.length; i++) {
+        if (this.getUserList[i].status == 1) {
+          this.stopActive[this.getUserList[i].id] = true
+        } else {
+          this.stopActive[this.getUserList[i].id] = false
+        }
       }
+      var me = this
+      this.timer = setInterval(function () {
+        me.actionUserList(me.objectSearch)
+      }, 5000)
     }
-    var me = this
-    this.timer = setInterval(function () {
-      me.actionUserList(me.objectSearch)
-    }, 5000)
   },
   methods: {
     ...mapActions({

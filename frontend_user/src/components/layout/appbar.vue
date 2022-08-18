@@ -127,10 +127,6 @@ export default {
         title: "Hồ sơ",
         to: "/profile",
       },
-      {
-        title: "Login",
-        to: "/login",
-      },
     ],
   }),
 };

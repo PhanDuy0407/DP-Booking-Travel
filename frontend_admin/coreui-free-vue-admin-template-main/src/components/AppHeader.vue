@@ -14,16 +14,11 @@
       </CHeaderNav>
       <CHeaderNav>
         <CNavItem>
-          <CNavLink href="#">
-            <CIcon class="mx-2" icon="cil-bell" size="lg" />
-          </CNavLink>
+          <button class="el-button el-button--primary" @click="logOut">
+            Đăng xuất
+          </button>
         </CNavItem>
         <!-- <CNavItem>
-          <CNavLink href="#">
-            <CIcon class="mx-2" icon="cil-list" size="lg" />
-          </CNavLink>
-        </CNavItem>
-        <CNavItem>
           <CNavLink href="#">
             <CIcon class="mx-2" icon="cil-envelope-open" size="lg" />
           </CNavLink>
@@ -52,6 +47,15 @@ export default {
     return {
       logo,
     }
+  },
+  methods: {
+    logOut() {
+      localStorage.removeItem('jwt')
+      localStorage.removeItem('username')
+      localStorage.removeItem('userId')
+      // this.setAuthentication(false);
+      this.$router.go()
+    },
   },
 }
 </script>

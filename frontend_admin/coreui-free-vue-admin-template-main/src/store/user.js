@@ -3,10 +3,14 @@ import axiosIns from 'axios'
 export const state = () => ({
   userList: [],
   userStatus: {},
+  authentication: false,
 })
 const getters = {
   getUserList: (state) => state.userList,
   getUserStatus: (state) => state.userStatus,
+  getAuthentication: (state) => {
+    return state.authentication
+  },
 }
 const mutations = {
   setUserList: (state, payload) => {
@@ -15,8 +19,14 @@ const mutations = {
   setUserStatus: (state, payload) => {
     state.userStatus = payload
   },
+  setAuthentication: (state, payload) => {
+    state.authentication = payload
+  },
 }
 const actions = {
+  setAuthentication({ commit }, val) {
+    commit('setAuthentication', val)
+  },
   async actionUserList({ commit }, objectSearch) {
     // let header = { headers: { Authorization: "Bearer " + useJwt.getToken() } }
     const data = await axiosIns.get(

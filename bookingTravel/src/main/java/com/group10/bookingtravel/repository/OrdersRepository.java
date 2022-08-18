@@ -1,5 +1,6 @@
 package com.group10.bookingtravel.repository;
 
+import com.group10.bookingtravel.dto.OrdersHistoryDTO;
 import com.group10.bookingtravel.entity.Orders;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,5 +19,7 @@ public interface OrdersRepository extends JpaRepository<Orders,Long> {
     @Query("select distinct new com.group10.bookingtravel.entity.Orders(o.id,o.userId,o.fullname,o.email,o.phoneNumber,o.address,o.adultCount,o.childrenCount,o.kidCount,o.babyCount,o.createdDate,o.status,o.priceId,o.sumPrice) from Orders o where ((o.createdDate >= ?1) or(?1 = '')) and ((o.createdDate <= ?2) or(?2 = ''))")
     public Optional<List<Orders>> listAllOrders(Date fromDate, Date toDate);
 
+    @Query("select distinct new com.group10.bookingtravel.dto.OrdersHistoryDTO(o.id,o.userId,o.fullname,o.email,o.phoneNumber,o.address,o.adultCount,o.childrenCount,o.kidCount,o.babyCount,o.createdDate,o.status,o.priceId,o.sumPrice,t.name) from Orders o, Price p, Tour t where o.priceId = p.id and p.tourId = t.id and o.userId = ?1")
+    public Optional<List<OrdersHistoryDTO>> getOrderHistoryByPriceId(Long userId);
 
 }
